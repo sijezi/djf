@@ -120,4 +120,70 @@ Global Scope Manager : no, but I went ahead and created one for you anyway!
 
 What? It created a global at run-time because it could not find one formally declared.
 
-*=| if we did this in strict mode, the global scope would be prevented from creating it. It would throw a reference error, 'bam is not defined'.
+- If we did this in strict mode, the global scope would be prevented from creating it. It would throw a reference error, 'bam is not defined'.
+
+- - -
+### Strict Mode
+- always use `strict mode`
+- - -
+
+
+### Example
+
+
+
+```javascript
+var foo = 'bar';
+
+function bar() {
+  var foo = 'baz';
+
+  function baz(foo) {
+    foo = 'bam';
+    bam = 'yay';
+  }
+
+  baz();
+}
+
+bar();
+foo; // bar
+bam; // yay
+baz(); // ReferenceError: Can't find variable: baz
+```
+
+## Conclusion
+- - -
+
+```javascript
+var foo = function bar() {
+  bar foo  = 'baz';
+  function baz(foo) {
+    foo = bar;
+    foo;
+  }
+  baz();
+};
+foo();
+bar(); // error
+```
+
+- - -
+
+For function expression, the `bar` identifier will not be added to the enclosing scope, that's why it will generate a `reference error` when called. In other words, there is no `bar` identifier in the global scope even though it does exist. Interestingly, we do have access to `bar` inside of itself.
+
+
+### Another example
+
+```javascript
+var foo;
+
+try {
+  foo.length;
+}
+catch(error) {
+  console.log(err); // TypeError
+}
+
+console.log(err); // ReferenceError
+```
